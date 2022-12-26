@@ -11,7 +11,7 @@
     <h1>{data.name}</h1>
   </div>
   <div class="flex flex-col gap-1">
-    <h3>Link Verification</h3>
+    <h3>Link Verifications</h3>
     <div class="flex flex-col gap-4">
       {#each data.links as link}
         <LinkChecklist {link} />

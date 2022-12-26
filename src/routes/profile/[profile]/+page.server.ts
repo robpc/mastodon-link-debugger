@@ -11,12 +11,8 @@ const processField = async (
     return {
       url,
       verified,
-      checklist: {
-        isHttps: false,
-        isBodyLessThanOneMegabyte: false,
-        hasProfileLink: false,
-        hasRelMeAttribute: false
-      }
+      isVerifiable: false,
+      checklist: undefined
     };
   }
 
@@ -32,6 +28,7 @@ const processField = async (
   return {
     url,
     verified,
+    isVerifiable: true,
     checklist: {
       isHttps,
       isBodyLessThanOneMegabyte,

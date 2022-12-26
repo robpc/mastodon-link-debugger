@@ -16,7 +16,7 @@
 
 <style lang="postcss">
   h1 {
-    @apply text-3xl font-bold mb-4;
+    @apply text-2xl font-bold mb-2 text-gray-700;
   }
   hr {
     @apply border-gray-200;

@@ -1,12 +1,15 @@
 type LinkCheck = {
   url: string;
   verified: string;
-  checklist: {
-    isHttps: boolean;
-    isBodyLessThanOneMegabyte: boolean;
-    hasProfileLink: boolean;
-    hasRelMeAttribute: boolean;
-  };
+  isVerifiable: Boolean;
+  checklist:
+    | {
+        isHttps: boolean;
+        isBodyLessThanOneMegabyte: boolean;
+        hasProfileLink: boolean;
+        hasRelMeAttribute: boolean;
+      }
+    | undefined;
 };
 
 type MastodonProfile = {

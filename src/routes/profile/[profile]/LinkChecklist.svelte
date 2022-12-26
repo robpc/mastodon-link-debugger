@@ -26,24 +26,29 @@
     <div>
       <a href={link.url} target="_blank" rel="noreferrer">{link.url}</a>
     </div>
-    <div class="flex flex-col gap-1">
-      <h5>Checklist</h5>
-      <div class="flex flex-col gap-2 ml-2">
-        <ChecklistItem value={link.checklist.isHttps} label={'Is the link HTTPS?'} />
-        <ChecklistItem
-          value={link.checklist.isBodyLessThanOneMegabyte}
-          label={'Is the link less than 1MB?'}
-        />
-        <ChecklistItem
-          value={link.checklist.hasProfileLink}
-          label={'Does is have the profile link'}
-        />
-        <ChecklistItem
-          value={link.checklist.hasRelMeAttribute}
-          label={'Does the profile link have a rel=me attribute'}
-        />
+    {#if link.checklist}
+      <div class="flex flex-col gap-1">
+        <h5>Checklist</h5>
+        <div class="flex flex-col gap-2 ml-2">
+          <ChecklistItem value={link.checklist.isHttps} label={'Is the link HTTPS?'} />
+          <ChecklistItem
+            value={link.checklist.isBodyLessThanOneMegabyte}
+            label={'Is the link less than 1MB?'}
+          />
+          <ChecklistItem
+            value={link.checklist.hasProfileLink}
+            label={'Does is have the profile link'}
+          />
+          <ChecklistItem
+            value={link.checklist.hasRelMeAttribute}
+            label={'Does the profile link have a rel=me attribute'}
+          />
+        </div>
       </div>
-    </div>
+    {/if}
+    {#if !link.isVerifiable}
+      <div>This link is not a verifiable type, such as an email address,</div>
+    {/if}
   </div>
 </div>
 
@@ -52,7 +57,7 @@
     @apply font-semibold;
   }
   .card {
-    @apply rounded bg-gray-500 text-gray-100;
+    @apply rounded bg-gray-400 text-gray-100;
   }
   .card.verified {
     @apply bg-yellow-500;
@@ -66,7 +71,7 @@
   }
 
   .icon {
-    @apply text-gray-600;
+    @apply text-gray-500;
   }
 
   .verified {
