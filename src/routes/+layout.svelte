@@ -4,12 +4,10 @@
 
 <div class="flex flex-col gap-8 mx-auto md:max-w-2xl p-4">
   <div>
-    <h1 class="text-3xl font-bold">Mastodon Link Debugger</h1>
+    <h1>Mastodon Link Debugger</h1>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-      labore et dolore magna aliqua. Massa sapien faucibus et molestie. Sed id semper risus in.
-      Ipsum suspendisse ultrices gravida dictum fusce. Placerat in egestas erat imperdiet sed
-      euismod nisi porta.
+      Link validation requires the coordination between the Mastodon and and the link URL. Use this
+      tool to see what issues might be preventing a link from being verified.
     </p>
   </div>
   <hr />
@@ -17,6 +15,9 @@
 </div>
 
 <style lang="postcss">
+  h1 {
+    @apply text-3xl font-bold mb-4;
+  }
   hr {
     @apply border-gray-200;
   }
