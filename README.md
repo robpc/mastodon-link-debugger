@@ -2,7 +2,7 @@
 
 Debug tool to analyze why mastodon links are not validated
 
-# Run locally
+## Run locally
 
 ```bash
 $ npm run dev
