@@ -52,8 +52,12 @@
     @apply font-semibold;
   }
   .card {
-    @apply rounded border border-gray-500 bg-gray-500 text-gray-100;
+    @apply rounded bg-gray-500 text-gray-100;
   }
+  .card.verified {
+    @apply bg-yellow-500;
+  }
+
   .card > .title {
     @apply px-3 py-2 flex flex-row gap-1;
   }
