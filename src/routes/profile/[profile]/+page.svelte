@@ -22,7 +22,7 @@
 
 <style lang="postcss">
   h1 {
-    @apply text-xl;
+    @apply text-2xl;
   }
   h2 {
     @apply font-mono text-sm text-gray-500;
