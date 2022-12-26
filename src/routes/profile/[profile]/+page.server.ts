@@ -7,6 +7,19 @@ const processField = async (
 ): Promise<LinkCheck> => {
   const url = value.replace(/^<a href=\"/, '').replace(/\".*/, '');
 
+  if (!url.startsWith('http')) {
+    return {
+      url,
+      verified,
+      checklist: {
+        isHttps: false,
+        isBodyLessThanOneMegabyte: false,
+        hasProfileLink: false,
+        hasRelMeAttribute: false
+      }
+    };
+  }
+
   const text = await fetch(url).then((resp) => resp.text());
   const html = parse(text);
   const links = html.querySelectorAll(`a[href='${profileUrl}']`);
