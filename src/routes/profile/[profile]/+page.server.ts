@@ -40,6 +40,7 @@ const processField = async (
 
 export const load: PageServerLoad = async ({ params }) => {
   const { profile } = params;
+  console.time(`load ${profile}`);
 
   const [username, domain] = profile.replace(/^@?/, '').split('@', 2);
   const profileUrl = `https://${domain}/@${username}`;
@@ -50,7 +51,9 @@ export const load: PageServerLoad = async ({ params }) => {
   const { display_name: name } = json;
 
   const linkPromises = json.fields.map((field) => processField(field, profileUrl));
-  const links = Promise.all(linkPromises);
+  const links = await Promise.all(linkPromises);
+
+  console.timeEnd(`load ${profile}`);
 
   return {
     name,
