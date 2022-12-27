@@ -1,5 +1,19 @@
-<script>
+<script lang="ts">
   import '../app.css';
+  // import { webVitals } from '$lib/vitals';
+  import { page } from '$app/stores';
+  import { browser } from '$app/environment';
+
+  let analyticsId = import.meta.env.VERCEL_ANALYTICS_ID;
+  $: if (browser && analyticsId) {
+    import('$lib/vitals').then(({ webVitals }) =>
+      webVitals({
+        path: $page.url.pathname,
+        params: $page.params,
+        analyticsId
+      })
+    );
+  }
 </script>
 
 <div class="flex flex-col gap-8 mx-auto md:max-w-2xl p-4">
