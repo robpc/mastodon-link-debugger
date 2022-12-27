@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Verified } from 'lucide-svelte';
+  import { Verified, Slash } from 'lucide-svelte';
   import dayjs from 'dayjs';
   import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 
@@ -12,19 +12,28 @@
   $: verified = !!link.verified;
 </script>
 
-<div class="flex flex-col gap-1 card" class:verified>
+<div class="card" class:verified>
   <div class="title">
-    <div class="icon"><Verified /></div>
-    <div>
-      {#if link.verified}Verified!{:else}Not Verified{/if}
-    </div>
-    {#if link.verified}<div class="grow-1 text-right w-full">
-        {dayjs(link.verified).format('lll')}
-      </div>{/if}
+    {#if link.isVerifiable}
+      <div class="icon"><Verified /></div>
+      <div>
+        {#if link.verified}Verified!{:else}Not Verified{/if}
+      </div>
+      {#if link.verified}<div class="grow-1 text-right w-full">
+          {dayjs(link.verified).format('lll')}
+        </div>{/if}
+    {:else}
+      <div class="icon"><Slash /></div>
+      <div>Not a link</div>
+    {/if}
   </div>
   <div class="body">
     <div>
-      <a href={link.url} target="_blank" rel="noreferrer">{link.url}</a>
+      {#if link.isVerifiable}
+        <a href={link.url} target="_blank" rel="noreferrer">{link.url}</a>
+      {:else}
+        <div>{link.url}</div>
+      {/if}
     </div>
     {#if link.checklist}
       <div class="flex flex-col gap-1">
@@ -37,17 +46,14 @@
           />
           <ChecklistItem
             value={link.checklist.hasProfileLink}
-            label={'Does is have the profile link'}
+            label={'Is there a link back to the profile?'}
           />
           <ChecklistItem
             value={link.checklist.hasRelMeAttribute}
-            label={'Does the profile link have a rel=me attribute'}
+            label={'Is there a link back to the profile with a rel=me attribute?'}
           />
         </div>
       </div>
-    {/if}
-    {#if !link.isVerifiable}
-      <div>This link is not a verifiable type, such as an email address,</div>
     {/if}
   </div>
 </div>
@@ -57,17 +63,17 @@
     @apply font-semibold;
   }
   .card {
-    @apply rounded bg-gray-400 text-gray-100;
+    @apply flex flex-col gap-2 p-2 rounded bg-gray-400 text-gray-100;
   }
   .card.verified {
     @apply bg-yellow-500;
   }
 
   .card > .title {
-    @apply px-3 py-2 flex flex-row gap-1;
+    @apply px-1 flex flex-row gap-1;
   }
   .card > .body {
-    @apply flex flex-col gap-4 mx-2 mb-2 p-4 rounded bg-gray-100 text-gray-900;
+    @apply flex flex-col gap-4 p-4 rounded bg-gray-100 text-gray-900;
   }
 
   .icon {
