@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+a {
+  @apply text-blue-600;
+}
+a:hover {
+  @apply text-blue-400 underline;
+}
+
+a.btn {
+  @apply px-4 py-2 rounded bg-blue-600 text-blue-100;
+}
+a.btn:hover {
+  @apply bg-blue-400 text-white no-underline;
+}
+
+.btn.btn-disabled {
+  @apply px-4 py-2 rounded bg-gray-100 border border-gray-100 text-gray-800;
+}

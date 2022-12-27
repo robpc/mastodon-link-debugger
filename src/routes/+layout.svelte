@@ -16,6 +16,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Mastodon Link Debugger</title>
+</svelte:head>
+
 <div class="flex flex-col gap-8 mx-auto md:max-w-2xl p-4">
   <div>
     <h1>Mastodon Link Debugger</h1>
@@ -26,6 +30,12 @@
   </div>
   <hr />
   <slot />
+  <div class="flex flex-col gap-1">
+    <hr />
+    <div class="flex flex-row gap-0.5 justify-center text-xs text-gray-400">
+      <div>Created by <a href="https://indieweb.social/@robpc">@robpc</a></div>
+    </div>
+  </div>
 </div>
 
 <style lang="postcss">
