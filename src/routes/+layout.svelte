@@ -10,8 +10,7 @@
       webVitals({
         path: $page.url.pathname,
         params: $page.params,
-        analyticsId,
-        debug: true
+        analyticsId
       })
     );
   }
