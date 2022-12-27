@@ -18,21 +18,19 @@ const processField = async (
     };
   }
 
-  let isLessThanFiveSeconds = true;
+  const startTime = process.hrtime();
+  const resp = await fetch(url);
+  const diffTime = process.hrtime(startTime);
+  const elapsedTime = diffTime[0] + diffTime[1] / 1e9;
+  console.log('elapsedTime', elapsedTime, diffTime, url);
 
-  const controller = new AbortController();
-  setTimeout(() => {
-    controller.abort();
-    isLessThanFiveSeconds = false;
-  }, 5000);
-
-  const resp = await fetch(url, { signal: controller.signal });
   const text = await resp.text();
 
   const html = parse(text);
   const links = html.querySelectorAll(`a[href='${profileUrl}']`);
 
   const isHttps = url.startsWith('https://');
+  const isLessThanFiveSeconds = elapsedTime < 5;
   const isBodyLessThanOneMegabyte = text.length < ONE_MEGABYTE;
   const hasProfileLink = links.length > 0;
   const hasRelMeAttribute = links.some(({ attributes }) => attributes.rel === 'me');
