@@ -1,6 +1,8 @@
 import type { PageServerLoad } from './$types';
 import { parse } from 'node-html-parser';
 
+const ONE_MEGABYTE = 1 * 1024 * 1024;
+
 const processField = async (
   { value, verified_at: verified }: MastodonField,
   profileUrl: string
@@ -16,12 +18,22 @@ const processField = async (
     };
   }
 
-  const text = await fetch(url).then((resp) => resp.text());
+  let isLessThanFiveSeconds = true;
+
+  const controller = new AbortController();
+  setTimeout(() => {
+    controller.abort();
+    isLessThanFiveSeconds = false;
+  }, 5000);
+
+  const resp = await fetch(url, { signal: controller.signal });
+  const text = await resp.text();
+
   const html = parse(text);
   const links = html.querySelectorAll(`a[href='${profileUrl}']`);
 
   const isHttps = url.startsWith('https://');
-  const isBodyLessThanOneMegabyte = text.length < 1 * 1024 * 1024;
+  const isBodyLessThanOneMegabyte = text.length < ONE_MEGABYTE;
   const hasProfileLink = links.length > 0;
   const hasRelMeAttribute = links.some(({ attributes }) => attributes.rel === 'me');
 
@@ -31,6 +43,7 @@ const processField = async (
     isVerifiable: true,
     checklist: {
       isHttps,
+      isLessThanFiveSeconds,
       isBodyLessThanOneMegabyte,
       hasProfileLink,
       hasRelMeAttribute

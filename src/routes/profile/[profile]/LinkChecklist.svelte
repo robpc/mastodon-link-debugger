@@ -41,6 +41,10 @@
         <div class="flex flex-col gap-2 ml-2">
           <ChecklistItem value={link.checklist.isHttps} label={'Is the link HTTPS?'} />
           <ChecklistItem
+            value={link.checklist.isLessThanFiveSeconds}
+            label={'Is the link response less than five seconds?'}
+          />
+          <ChecklistItem
             value={link.checklist.isBodyLessThanOneMegabyte}
             label={'Is the link less than 1MB?'}
           />

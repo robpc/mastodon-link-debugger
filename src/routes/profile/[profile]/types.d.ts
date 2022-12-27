@@ -5,6 +5,7 @@ type LinkCheck = {
   checklist:
     | {
         isHttps: boolean;
+        isLessThanFiveSeconds: boolean;
         isBodyLessThanOneMegabyte: boolean;
         hasProfileLink: boolean;
         hasRelMeAttribute: boolean;
