@@ -14,6 +14,7 @@ const processField = async (
       url,
       verified,
       isVerifiable: false,
+      allPassed: false,
       checklist: undefined
     };
   }
@@ -35,17 +36,22 @@ const processField = async (
   const hasProfileLink = links.length > 0;
   const hasRelMeAttribute = links.some(({ attributes }) => attributes.rel === 'me');
 
+  const checklist: Checklist = {
+    isHttps,
+    isLessThanFiveSeconds,
+    isBodyLessThanOneMegabyte,
+    hasProfileLink,
+    hasRelMeAttribute
+  };
+
+  const allPassed = !Object.values(checklist).some((v) => v === false);
+
   return {
     url,
     verified,
     isVerifiable: true,
-    checklist: {
-      isHttps,
-      isLessThanFiveSeconds,
-      isBodyLessThanOneMegabyte,
-      hasProfileLink,
-      hasRelMeAttribute
-    }
+    allPassed,
+    checklist
   };
 };
 

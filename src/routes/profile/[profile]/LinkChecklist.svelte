@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Verified, Slash } from 'lucide-svelte';
+  import { Verified, Link2, Link2Off } from 'lucide-svelte';
   import dayjs from 'dayjs';
   import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 
@@ -14,17 +14,18 @@
 
 <div class="card" class:verified>
   <div class="title">
-    {#if link.isVerifiable}
-      <div class="icon"><Verified /></div>
-      <div>
-        {#if link.verified}Verified!{:else}Not Verified{/if}
-      </div>
-      {#if link.verified}<div class="grow-1 text-right w-full">
-          {dayjs(link.verified).format('lll')}
-        </div>{/if}
-    {:else}
-      <div class="icon"><Slash /></div>
+    {#if !link.isVerifiable}
+      <div class="icon"><Link2Off /></div>
       <div>Not a link</div>
+    {:else if link.verified}
+      <div class="icon"><Verified /></div>
+      <div>Verified!</div>
+      <div class="grow-1 text-right w-full">
+        {dayjs(link.verified).format('lll')}
+      </div>
+    {:else}
+      <div class="icon"><Link2 /></div>
+      <div>Not Verified</div>
     {/if}
   </div>
   <div class="body">
@@ -39,23 +40,41 @@
       <div class="flex flex-col gap-1">
         <h5>Checklist</h5>
         <div class="flex flex-col gap-2 ml-2">
-          <ChecklistItem value={link.checklist.isHttps} label={'Is the link HTTPS?'} />
-          <ChecklistItem
-            value={link.checklist.isLessThanFiveSeconds}
-            label={'Is the link response less than five seconds?'}
-          />
-          <ChecklistItem
-            value={link.checklist.isBodyLessThanOneMegabyte}
-            label={'Is the link less than 1MB?'}
-          />
-          <ChecklistItem
-            value={link.checklist.hasProfileLink}
-            label={'Is there a link back to the profile?'}
-          />
-          <ChecklistItem
-            value={link.checklist.hasRelMeAttribute}
-            label={'Is there a link back to the profile with a rel=me attribute?'}
-          />
+          {#if link.verified && !link.allPassed}
+            <div class="text-xs text-gray-600">
+              Note: This link is verified but not currently passing all checks. It might not
+              reverify next time the profile is saved and might appear unverified on some instances.
+            </div>
+          {/if}
+          {#if !link.verified && link.allPassed}
+            <div class="text-xs text-gray-600">
+              Note: This link is not verified but appears to pass all checks. The profile owner
+              should resave their profile. If that does not verify the link please report a bug to <a
+                href="https://indieweb.social/@robpc">@robpc</a
+              >.
+            </div>
+          {/if}
+          {#if link.allPassed}
+            <ChecklistItem value={link.allPassed} label={'This link has passed all checks'} />
+          {:else}
+            <ChecklistItem value={link.checklist.isHttps} label={'Is the link HTTPS?'} />
+            <ChecklistItem
+              value={link.checklist.isLessThanFiveSeconds}
+              label={'Is the link response less than five seconds?'}
+            />
+            <ChecklistItem
+              value={link.checklist.isBodyLessThanOneMegabyte}
+              label={'Is the link less than 1MB?'}
+            />
+            <ChecklistItem
+              value={link.checklist.hasProfileLink}
+              label={'Is there a link back to the profile?'}
+            />
+            <ChecklistItem
+              value={link.checklist.hasRelMeAttribute}
+              label={'Is there a link back to the profile with a rel=me attribute?'}
+            />
+          {/if}
         </div>
       </div>
     {/if}
@@ -74,7 +93,7 @@
   }
 
   .card > .title {
-    @apply px-1 flex flex-row gap-1;
+    @apply px-1 flex flex-row items-center gap-1;
   }
   .card > .body {
     @apply flex flex-col gap-4 p-4 rounded bg-gray-100 text-gray-900;

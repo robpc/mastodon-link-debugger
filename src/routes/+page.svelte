@@ -29,7 +29,8 @@
     '@robpc@indieweb.social',
     '@Mastodon@mastodon.social',
     '@ludumdare@jammer.social',
-    '@drewharwell@mastodon.social'
+    '@drewharwell@mastodon.social',
+    '@molly0xfff@hachyderm.io'
   ];
 </script>
 

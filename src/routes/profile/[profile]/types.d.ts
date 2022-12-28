@@ -1,16 +1,17 @@
+type Checklist = {
+  isHttps: boolean;
+  isLessThanFiveSeconds: boolean;
+  isBodyLessThanOneMegabyte: boolean;
+  hasProfileLink: boolean;
+  hasRelMeAttribute: boolean;
+};
+
 type LinkCheck = {
   url: string;
   verified: string;
   isVerifiable: Boolean;
-  checklist:
-    | {
-        isHttps: boolean;
-        isLessThanFiveSeconds: boolean;
-        isBodyLessThanOneMegabyte: boolean;
-        hasProfileLink: boolean;
-        hasRelMeAttribute: boolean;
-      }
-    | undefined;
+  allPassed: boolean;
+  checklist: Checklist | undefined;
 };
 
 type MastodonProfile = {
