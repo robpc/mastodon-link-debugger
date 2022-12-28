@@ -1,8 +1,11 @@
 <script lang="ts">
   import '../app.css';
   // import { webVitals } from '$lib/vitals';
+  import { fade } from 'svelte/transition';
+  import { Jumper } from 'svelte-loading-spinners';
   import { page } from '$app/stores';
   import { browser } from '$app/environment';
+  import { navigationIsDelayed } from '$lib/store';
 
   let analyticsId = import.meta.env.VERCEL_ANALYTICS_ID;
   $: if (browser && analyticsId) {
@@ -29,7 +32,13 @@
     </p>
   </div>
   <hr />
-  <slot />
+  {#if $navigationIsDelayed}
+    <div class="flex justify-center items-center text-gray-600 py-16" in:fade={{ duration: 150 }}>
+      <Jumper color="#9E9E9E" />
+    </div>
+  {:else}
+    <slot />
+  {/if}
   <div class="flex flex-col gap-1">
     <hr />
     <div class="flex flex-row gap-0.5 justify-center text-xs text-gray-400">
