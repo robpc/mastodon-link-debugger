@@ -10,11 +10,13 @@
 
     if (!profile) return;
 
-    if (profile.startsWith('http')) {
+    const httpRex = /https?\:\/\/.+\/@.+/;
+    const usernameRex = /@.+@.+/;
+    if (httpRex.test(profile)) {
       const [domain, username] = profile.replace(/https?\:\/\//, '').split('/', 2);
 
       handle = `@${username}@${domain}`;
-    } else if (profile.includes('@')) {
+    } else if (usernameRex.test(profile)) {
       const [username, domain] = profile.replace(/^@?/, '').split('@', 2);
 
       handle = `@${username}@${domain}`;
@@ -32,25 +34,50 @@
     '@drewharwell@mastodon.social',
     '@molly0xfff@hachyderm.io'
   ];
+
+  const debounce = (inputFunction: () => void, timeToWaitBeforeFiringInMs = 500) => {
+    let timer: NodeJS.Timeout;
+    return (...args: []) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        // @ts-ignore
+        inputFunction.apply(this, args);
+      }, timeToWaitBeforeFiringInMs);
+    };
+  };
+
+  let go: HTMLAnchorElement;
+
+  const handleKeyup = debounce(validate, 500);
+  const handleKeydown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      validate();
+      go.click();
+    }
+  };
 </script>
 
 <div class="flex flex-col gap-6">
-  <div class="flex flex-row items-center gap-2">
-    <label for="profile">Mastodon profile:</label>
-    <input
-      class="grow"
-      type="text"
-      id="profile"
-      name="profile"
-      bind:value={profile}
-      on:blur={validate}
-    />
-    <a class:hidden={!handle} class="btn" href="./profile/{handle}">Go</a>
-    <div class:hidden={handle} class="btn btn-disabled">Go</div>
-  </div>
-  <div class:hidden={!error} class="error">
-    Does not match the profile <code>@name@example.social</code> or url
-    <code>https://example.social/@name</code> format
+  <div class="flex flex-col gap-1">
+    <div class="flex flex-row items-center gap-2">
+      <input
+        class="grow"
+        type="text"
+        id="profile"
+        name="profile"
+        placeholder="Enter a profile (ex. @user@my.social or https://my.social/@user)"
+        bind:value={profile}
+        on:blur={validate}
+        on:keyup={handleKeyup}
+        on:keydown={handleKeydown}
+      />
+      <a bind:this={go} class:hidden={!handle} class="btn" href="./profile/{handle}">Go</a>
+      <div class:hidden={handle} class="btn btn-disabled">Go</div>
+    </div>
+    <div class:hidden={!error} class="error">
+      Input should match the profile <code>@name@example.social</code> or url
+      <code>https://example.social/@name</code> format
+    </div>
   </div>
   <div class="flex flex-col gap-1">
     <h2>Examples</h2>
@@ -69,7 +96,7 @@
   }
 
   .error {
-    @apply text-xs text-yellow-700;
+    @apply text-xs text-gray-500;
   }
   .error > code {
     @apply px-1 py-0.5 rounded font-mono text-yellow-600 bg-yellow-100;

@@ -62,17 +62,26 @@ export const load: PageServerLoad = async ({ params }) => {
   const [username, domain] = profile.replace(/^@?/, '').split('@', 2);
   const profileUrl = `https://${domain}/@${username}`;
 
-  const resp = await fetch(`https://${domain}/api/v1/accounts/lookup/?acct=${username}`);
-  const json: MastodonProfile = await resp.json();
+  try {
+    const resp = await fetch(`https://${domain}/api/v1/accounts/lookup/?acct=${username}`);
+    const json: MastodonProfile = await resp.json();
 
-  const { display_name: name } = json;
+    const { display_name: name } = json;
 
-  const linkPromises = json.fields.map((field) => processField(field, profileUrl));
-  const links = await Promise.all(linkPromises);
+    const linkPromises = json.fields.map((field) => processField(field, profileUrl));
+    const links = await Promise.all(linkPromises);
 
-  return {
-    name,
-    profile,
-    links
-  };
+    return {
+      name,
+      profile,
+      links
+    };
+  } catch (err) {
+    console.log('Error:', err);
+    return {
+      name: 'Unable to load profile',
+      profile,
+      links: []
+    };
+  }
 };

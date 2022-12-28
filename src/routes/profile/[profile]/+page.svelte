@@ -13,15 +13,19 @@
   <div class="flex flex-col gap-0">
     <h2>{data.profile}</h2>
     <h1>{data.name}</h1>
-    <a href="../" class="text-xs mt-0.5">Change profile</a>
+    <a href="../" class="text-xs mt-0.5">Enter new profile</a>
   </div>
   <div class="flex flex-col gap-1">
-    <h3>Link Verifications</h3>
-    <div class="flex flex-col gap-4">
-      {#each data.links as link}
-        <LinkChecklist {link} />
-      {/each}
-    </div>
+    {#if data.links.length > 0}
+      <h3>Link Verifications</h3>
+      <div class="flex flex-col gap-4">
+        {#each data.links as link}
+          <LinkChecklist {link} />
+        {/each}
+      </div>
+    {:else}
+      <div class="text-gray-400">No links found</div>
+    {/if}
   </div>
 </div>
 
