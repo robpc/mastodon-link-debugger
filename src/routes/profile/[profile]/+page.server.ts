@@ -20,10 +20,11 @@ const processField = async (
   }
 
   const startTime = process.hrtime();
-  const resp = await fetch(url);
+  const resp = await fetch(url, {
+    headers: { 'User-Agent': 'http.rb/2.2.2 (Mastodon/4.0.2; +mastodon-link-debugger.vercel.app/)' }
+  });
   const diffTime = process.hrtime(startTime);
   const elapsedTime = diffTime[0] + diffTime[1] / 1e9;
-  console.log('elapsedTime', elapsedTime, diffTime, url);
 
   const text = await resp.text();
 
@@ -57,7 +58,6 @@ const processField = async (
 
 export const load: PageServerLoad = async ({ params }) => {
   const { profile } = params;
-  console.time(`load ${profile}`);
 
   const [username, domain] = profile.replace(/^@?/, '').split('@', 2);
   const profileUrl = `https://${domain}/@${username}`;
@@ -69,8 +69,6 @@ export const load: PageServerLoad = async ({ params }) => {
 
   const linkPromises = json.fields.map((field) => processField(field, profileUrl));
   const links = await Promise.all(linkPromises);
-
-  console.timeEnd(`load ${profile}`);
 
   return {
     name,
