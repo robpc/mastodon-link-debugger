@@ -1,11 +1,18 @@
 <script lang="ts">
   import '../app.css';
-  // import { webVitals } from '$lib/vitals';
+
   import { fade } from 'svelte/transition';
   import { Jumper } from 'svelte-loading-spinners';
   import { page } from '$app/stores';
-  import { browser } from '$app/environment';
+  import { browser, dev } from '$app/environment';
   import { navigationIsDelayed } from '$lib/store';
+
+  $: if (browser) {
+    import('@vercel/analytics').then(
+      ({ inject }) => inject({ mode: dev ? 'development' : 'production' }),
+      (err) => console.log('Unable to load Vercel Analytics', err)
+    );
+  }
 
   let analyticsId = import.meta.env.VERCEL_ANALYTICS_ID;
   $: if (browser && analyticsId) {
