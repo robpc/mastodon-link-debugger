@@ -15,7 +15,7 @@ export const actions: Actions = {
     if (httpRex.test(profile)) {
       const [domain, username] = profile.replace(/https?\:\/\//, '').split('/', 2);
 
-      throw redirect(303, `./profile/@${username}@${domain}`);
+      throw redirect(303, `./profile/${username}@${domain}`);
     }
 
     if (usernameRex.test(profile)) {
