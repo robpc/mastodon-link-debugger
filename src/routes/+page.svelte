@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { enhance } from '$app/forms';
   import type { ActionData } from './$types';
 
   export let form: ActionData;
@@ -14,7 +15,7 @@
 
 <div class="flex flex-col gap-6">
   <div class="flex flex-col gap-1">
-    <form method="POST" class="flex flex-row items-center gap-2">
+    <form method="POST" class="flex flex-row items-center gap-2" use:enhance>
       <input
         class="grow"
         type="text"
