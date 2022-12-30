@@ -2,6 +2,8 @@ import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { parse } from 'node-html-parser';
 
+const headers = { 'Cache-Control': 'max-age=30, public' };
+
 export const GET: RequestHandler = async ({ url }) => {
   const link = url.searchParams.get('link');
   const linkBack = url.searchParams.get('linkBack');
@@ -20,7 +22,7 @@ export const GET: RequestHandler = async ({ url }) => {
         url: link,
         isLink: false
       },
-      { headers: { 'cache-control': 'max-age=30, public' } }
+      { headers }
     );
   }
 
@@ -62,7 +64,7 @@ export const GET: RequestHandler = async ({ url }) => {
         bodySize,
         links
       },
-      { headers: { 'cache-control': 'max-age=30, public' } }
+      { headers }
     );
   } catch (err) {}
 
@@ -76,6 +78,6 @@ export const GET: RequestHandler = async ({ url }) => {
       bodySize: null,
       links: null
     },
-    { headers: { 'cache-control': 'max-age=30, public' } }
+    { headers }
   );
 };
