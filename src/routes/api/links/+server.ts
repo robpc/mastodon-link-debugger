@@ -2,7 +2,7 @@ import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { parse } from 'node-html-parser';
 
-const headers = { 'Cache-Control': 'max-age=30, public' };
+const headers = { 'cache-Control': 'max-age=30, public' };
 
 export const GET: RequestHandler = async ({ url }) => {
   const link = url.searchParams.get('link');

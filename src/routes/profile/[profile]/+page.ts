@@ -2,8 +2,12 @@ import type { PageLoad } from './$types';
 
 const ONE_MEGABYTE = 1 * 1024 * 1024;
 
-export const load: PageLoad = async ({ fetch, params }) => {
+export const load: PageLoad = async ({ fetch, params, setHeaders }) => {
   const { profile } = params;
+
+  setHeaders({
+    'cache-control': 'max-age=15, public'
+  });
 
   const [username, domain] = profile.replace(/^@?/, '').split('@', 2);
   const profileUrl = `https://${domain}/@${username}`;
