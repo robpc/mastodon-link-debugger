@@ -44,7 +44,7 @@ export const load: PageLoad = async ({ fetch, params, setHeaders }) => {
           const isBodyLessThanOneMegabyte = linkMeta.bodySize < ONE_MEGABYTE;
           const hasProfileLink = linkMeta.links.length > 0;
           const hasRelMeAttribute = hasProfileLink
-            ? linkMeta.links.some(({ rel }) => rel === 'me')
+            ? linkMeta.links.some(({ rel }) => rel.includes('me'))
             : null;
 
           const checklist: Checklist = {
