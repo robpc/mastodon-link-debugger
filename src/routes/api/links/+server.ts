@@ -49,7 +49,7 @@ export const GET: RequestHandler = async ({ url }) => {
 
     const html = parse(text);
     const links = html
-      .querySelectorAll(`a[href='${linkBack}']`)
+      .querySelectorAll(`a[href='${linkBack}'],link[href='${linkBack}']`)
       .map(({ attributes }) => ({ href: attributes.href, rel: attributes.rel.split(' ') }));
 
     const bodySize = text.length;
