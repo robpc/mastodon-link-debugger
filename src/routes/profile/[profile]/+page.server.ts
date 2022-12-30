@@ -1,6 +1,8 @@
 import type { PageServerLoad } from './$types';
 import { parse } from 'node-html-parser';
 
+export const prerender = false;
+
 const ONE_MEGABYTE = 1 * 1024 * 1024;
 
 const processField = async (
@@ -19,40 +21,69 @@ const processField = async (
     };
   }
 
-  const startTime = process.hrtime();
-  const resp = await fetch(url, {
-    headers: { 'User-Agent': 'http.rb/2.2.2 (Mastodon/4.0.2; +mastodon-link-debugger.vercel.app/)' }
-  });
-  const diffTime = process.hrtime(startTime);
-  const elapsedTime = diffTime[0] + diffTime[1] / 1e9;
-
-  const text = await resp.text();
-
-  const html = parse(text);
-  const links = html.querySelectorAll(`a[href='${profileUrl}']`);
-
   const isHttps = url.startsWith('https://');
-  const isLessThanFiveSeconds = elapsedTime < 5;
-  const isBodyLessThanOneMegabyte = text.length < ONE_MEGABYTE;
-  const hasProfileLink = links.length > 0;
-  const hasRelMeAttribute = links.some(({ attributes }) => attributes.rel === 'me');
+  let isLessThanFiveSeconds = false;
 
-  const checklist: Checklist = {
-    isHttps,
-    isLessThanFiveSeconds,
-    isBodyLessThanOneMegabyte,
-    hasProfileLink,
-    hasRelMeAttribute
-  };
+  try {
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(), 8000);
 
-  const allPassed = !Object.values(checklist).some((v) => v === false);
+    const startTime = process.hrtime();
+    const resp = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'http.rb/2.2.2 (Mastodon/4.0.2; +mastodon-link-debugger.vercel.app/)'
+      }
+    });
+    const diffTime = process.hrtime(startTime);
+    const elapsedTime = diffTime[0] + diffTime[1] / 1e9;
+
+    isLessThanFiveSeconds = resp.ok && elapsedTime < 5;
+
+    console.log(url, elapsedTime, controller.signal.aborted, resp.ok);
+
+    const text = await resp.text();
+
+    const html = parse(text);
+    const links = html.querySelectorAll(`a[href='${profileUrl}']`);
+
+    const isBodyLessThanOneMegabyte = text.length < ONE_MEGABYTE;
+    const hasProfileLink = links.length > 0;
+    const hasRelMeAttribute = hasProfileLink
+      ? links.some(({ attributes }) => attributes.rel === 'me')
+      : null;
+
+    const checklist: Checklist = {
+      isHttps,
+      isLessThanFiveSeconds,
+      isBodyLessThanOneMegabyte,
+      hasProfileLink,
+      hasRelMeAttribute
+    };
+
+    const allPassed = !Object.values(checklist).some((v) => v !== true);
+
+    return {
+      url,
+      verified,
+      isVerifiable: true,
+      allPassed,
+      checklist
+    };
+  } catch (err) {}
 
   return {
     url,
     verified,
     isVerifiable: true,
-    allPassed,
-    checklist
+    allPassed: false,
+    checklist: {
+      isHttps,
+      isLessThanFiveSeconds,
+      isBodyLessThanOneMegabyte: null,
+      hasProfileLink: null,
+      hasRelMeAttribute: null
+    }
   };
 };
 

@@ -1,9 +1,9 @@
 type Checklist = {
   isHttps: boolean;
   isLessThanFiveSeconds: boolean;
-  isBodyLessThanOneMegabyte: boolean;
-  hasProfileLink: boolean;
-  hasRelMeAttribute: boolean;
+  isBodyLessThanOneMegabyte: boolean | null;
+  hasProfileLink: boolean | null;
+  hasRelMeAttribute: boolean | null;
 };
 
 type LinkCheck = {
