@@ -33,7 +33,7 @@
       {#if link.isVerifiable}
         <a href={link.url} target="_blank" rel="noreferrer">{link.url}</a>
       {:else}
-        <div>{link.url}</div>
+        <div class="overflow-hidden overflow-ellipsis">{link.url}</div>
       {/if}
     </div>
     {#if link.checklist}
@@ -89,7 +89,7 @@
     @apply flex flex-col gap-2 p-2 rounded bg-gray-400 text-gray-100;
   }
   .card.verified {
-    @apply bg-yellow-500;
+    @apply bg-green-500;
   }
 
   .card > .title {
