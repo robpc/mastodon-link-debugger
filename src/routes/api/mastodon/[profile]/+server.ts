@@ -20,7 +20,7 @@ export const GET: RequestHandler = async ({ params }) => {
 
     return json(mastodon, { headers: { 'cache-control': 'max-age=30, public' } });
   } catch (err: any) {
-    console.log(profileUrl, err);
+    console.log('ERROR - /api/mastodon:', profileUrl, err);
     throw error(500, err.message);
   }
 };

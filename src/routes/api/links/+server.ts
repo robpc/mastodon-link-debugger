@@ -50,7 +50,10 @@ export const GET: RequestHandler = async ({ url }) => {
     const html = parse(text);
     const links = html
       .querySelectorAll(`a[href='${linkBack}'],link[href='${linkBack}']`)
-      .map(({ attributes }) => ({ href: attributes.href, rel: attributes.rel.split(' ') }));
+      .map(({ attributes }) => ({
+        href: attributes.href,
+        rel: attributes.rel ? attributes.rel.split(' ') : []
+      }));
 
     const bodySize = text.length;
 
@@ -66,7 +69,9 @@ export const GET: RequestHandler = async ({ url }) => {
       },
       { headers }
     );
-  } catch (err) {}
+  } catch (err) {
+    console.log('ERROR - /api/links:', url, err);
+  }
 
   return json(
     {

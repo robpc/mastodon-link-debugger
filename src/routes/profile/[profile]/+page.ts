@@ -42,7 +42,7 @@ export const load: PageLoad = async ({ fetch, params, setHeaders }) => {
           isLessThanFiveSeconds = resp.ok && linkMeta.elapsedTime < 5;
 
           const isBodyLessThanOneMegabyte = linkMeta.bodySize < ONE_MEGABYTE;
-          const hasProfileLink = linkMeta.links.length > 0;
+          const hasProfileLink = linkMeta.links && linkMeta.links.length > 0;
           const hasRelMeAttribute = hasProfileLink
             ? linkMeta.links.some(({ rel }) => rel.includes('me'))
             : null;
@@ -65,7 +65,7 @@ export const load: PageLoad = async ({ fetch, params, setHeaders }) => {
             checklist
           };
         } catch (err) {
-          console.log('ERROR:', url, err);
+          console.log('ERROR - /profile:', url, err);
         }
 
         return {
