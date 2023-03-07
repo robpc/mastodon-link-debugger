@@ -48,8 +48,20 @@
   {/if}
   <div class="flex flex-col gap-1">
     <hr />
-    <div class="flex flex-row gap-0.5 justify-center text-xs text-gray-400">
-      <div>Created by <a href="https://indieweb.social/@robpc">@robpc</a></div>
+    <div class="flex flex-row gap-2 justify-center text-xs text-gray-400">
+      <div>
+        Created by <a href="https://indieweb.social/@robpc" target="_blank" rel="me noreferrer"
+          >@robpc</a
+        >
+      </div>
+      <div>•</div>
+      <div>
+        Source on <a
+          href="https://github.com/robpc/mastodon-link-debugger"
+          target="_blank"
+          rel="noreferrer">Github</a
+        >
+      </div>
     </div>
   </div>
 </div>
