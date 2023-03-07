@@ -43,7 +43,10 @@ export const GET: RequestHandler = async ({ url }) => {
     const diffTime = process.hrtime(startTime);
     elapsedTime = diffTime[0] + diffTime[1] / 1e9;
 
-    console.log(link, elapsedTime, controller.signal.aborted, resp.ok);
+    const isSuccess = resp.ok;
+    const statusCode = resp.status;
+
+    // console.log(link, elapsedTime, controller.signal.aborted, resp.ok);
 
     const text = await resp.text();
 
@@ -63,6 +66,8 @@ export const GET: RequestHandler = async ({ url }) => {
         isLink: true,
         isVerifiable: true,
         isHttps,
+        isSuccess,
+        statusCode,
         elapsedTime,
         bodySize,
         links

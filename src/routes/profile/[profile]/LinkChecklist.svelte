@@ -59,6 +59,10 @@
           {:else}
             <ChecklistItem value={link.checklist.isHttps} label={'Is the link HTTPS?'} />
             <ChecklistItem
+              value={link.checklist.isSuccessful}
+              label={'Did the link response succeed?'}
+            />
+            <ChecklistItem
               value={link.checklist.isLessThanFiveSeconds}
               label={'Is the link response less than five seconds?'}
             />
