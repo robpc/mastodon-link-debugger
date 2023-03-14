@@ -1,7 +1,5 @@
 import type { PageLoad } from './$types';
 
-const ONE_MEGABYTE = 1 * 1024 * 1024;
-
 export const load: PageLoad = async ({ fetch, params, setHeaders }) => {
   const { profile } = params;
 
@@ -56,7 +54,6 @@ export const load: PageLoad = async ({ fetch, params, setHeaders }) => {
                 isHttps,
                 isSuccessful,
                 isLessThanFiveSeconds: null,
-                isBodyLessThanOneMegabyte: null,
                 hasProfileLink: null,
                 hasRelMeAttribute: null
               }
@@ -66,7 +63,6 @@ export const load: PageLoad = async ({ fetch, params, setHeaders }) => {
           isLessThanFiveSeconds = resp.ok && linkMeta.elapsedTime < 5;
 
           if (isSuccessful && isLessThanFiveSeconds) {
-            const isBodyLessThanOneMegabyte = linkMeta.bodySize < ONE_MEGABYTE;
             const hasProfileLink = linkMeta.links && linkMeta.links.length > 0;
             const hasRelMeAttribute = hasProfileLink
               ? linkMeta.links.some(({ rel }: { rel: string }) => rel.includes('me'))
@@ -76,7 +72,6 @@ export const load: PageLoad = async ({ fetch, params, setHeaders }) => {
               isHttps,
               isSuccessful,
               isLessThanFiveSeconds,
-              isBodyLessThanOneMegabyte,
               hasProfileLink,
               hasRelMeAttribute
             };
@@ -104,7 +99,6 @@ export const load: PageLoad = async ({ fetch, params, setHeaders }) => {
             isHttps,
             isSuccessful,
             isLessThanFiveSeconds,
-            isBodyLessThanOneMegabyte: null,
             hasProfileLink: null,
             hasRelMeAttribute: null
           }

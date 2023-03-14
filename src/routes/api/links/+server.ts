@@ -58,8 +58,6 @@ export const GET: RequestHandler = async ({ url }) => {
         rel: attributes.rel ? attributes.rel.split(' ') : []
       }));
 
-    const bodySize = text.length;
-
     return json(
       {
         url: link,
@@ -69,7 +67,6 @@ export const GET: RequestHandler = async ({ url }) => {
         isSuccess,
         statusCode,
         elapsedTime,
-        bodySize,
         links
       },
       { headers }
@@ -85,7 +82,6 @@ export const GET: RequestHandler = async ({ url }) => {
       isVerifiable: true,
       isHttps,
       elapsedTime,
-      bodySize: null,
       links: null
     },
     { headers }

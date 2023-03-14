@@ -67,10 +67,6 @@
               label={'Is the link response less than five seconds?'}
             />
             <ChecklistItem
-              value={link.checklist.isBodyLessThanOneMegabyte}
-              label={'Is the link less than 1MB?'}
-            />
-            <ChecklistItem
               value={link.checklist.hasProfileLink}
               label={'Is there a link back to the profile?'}
             />

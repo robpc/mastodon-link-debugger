@@ -2,7 +2,6 @@ type Checklist = {
   isHttps: boolean;
   isSuccessful: boolean;
   isLessThanFiveSeconds: boolean | null;
-  isBodyLessThanOneMegabyte: boolean | null;
   hasProfileLink: boolean | null;
   hasRelMeAttribute: boolean | null;
 };
